@@ -22,6 +22,8 @@ namespace Fusible\SessionProvider;
 use Aura\Di\Container;
 use Aura\Di\ContainerConfig;
 
+use Aura\Session\SessionFactory as Factory;
+
 /**
  * Config
  *
@@ -73,10 +75,7 @@ class Config extends ContainerConfig
             $di->values['cookie'] = $this->cookie;
         }
 
-        $di->set(
-            'aura/session:factory',
-            $di->lazyNew('Aura\Session\SessionFactory')
-        );
+        $di->set('aura/session:factory', $di->lazyNew(Factory::class));
 
         $di->set(
             'aura/session:session',
