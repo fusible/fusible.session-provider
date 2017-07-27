@@ -1,0 +1,31 @@
+{
+    "name": "fusible/session-provider",
+    "description": "Aura\\Session provider for Aura\\Di",
+    "homepage":"https://github.com/fusible/fusible.session-provider",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jake johns",
+            "email": "jake@jakejohns.net"
+        }
+    ],
+    "require": {
+        "aura/di": "~3.0",
+        "aura/session": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fusible\\SessionProvider\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fusible\\SessionProvider\\":"tests/",
+            "Aura\\Di\\": "vendor/aura/di/tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.0"
+    }
+}
