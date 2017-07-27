@@ -4,35 +4,36 @@
 namespace Fusible\SessionProvider;
 
 use Aura\Di\AbstractContainerConfigTest;
+use Aura\Session;
 
 class ConfigTest extends AbstractContainerConfigTest
 {
     protected function setUp()
     {
+        $prev = error_reporting(0);
         @session_start();
+        error_reporting($prev);
         parent::setUp();
     }
 
     protected function getConfigClasses()
     {
-        return [
-            'Fusible\SessionProvider\Config'
-        ];
+        return [Config::class];
     }
 
     public function provideGet()
     {
         return [
-            ['aura/session:factory', 'Aura\Session\SessionFactory'],
-            ['aura/session:session', 'Aura\Session\Session'],
-            ['aura/session:csrf', 'Aura\Session\CsrfToken'],
+            [Session\SessionFactory::class, Session\SessionFactory::class],
+            [Session\Session::class, Session\Session::class],
+            // [Session\CsrfToken::class, Session\CsrfToken::class]
         ];
     }
 
     public function provideNewInstance()
     {
         return [
-            ['Aura\Session\SessionFactory']
+            [Session\SessionFactory::class]
         ];
     }
 

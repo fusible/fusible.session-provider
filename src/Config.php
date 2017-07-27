@@ -22,7 +22,7 @@ namespace Fusible\SessionProvider;
 use Aura\Di\Container;
 use Aura\Di\ContainerConfig;
 
-use Aura\Session\SessionFactory as Factory;
+use Aura\Session;
 
 /**
  * Config
@@ -55,7 +55,7 @@ class Config extends ContainerConfig
      */
     public function __construct(array $cookie = null)
     {
-        $this->cookie = (null === $cookie) ? $_COOKIE : $cookie;
+        $this->cookie = $cookie ?? $_COOKIE;
     }
 
     /**
@@ -71,25 +71,28 @@ class Config extends ContainerConfig
      */
     public function define(Container $di)
     {
-        if (! isset($di->values['cookie'])) {
-            $di->values['cookie'] = $this->cookie;
+        if (! isset($di->values[Cookie::class])) {
+            $di->values[Cookie::class] = $this->cookie;
         }
 
-        $di->set('aura/session:factory', $di->lazyNew(Factory::class));
+        $di->set(
+            Session\SessionFactory::class,
+            $di->lazyNew(Session\SessionFactory::class)
+        );
 
         $di->set(
-            'aura/session:session',
+            Session\Session::class,
             $di->lazyGetCall(
-                'aura/session:factory',
+                Session\SessionFactory::class,
                 'newInstance',
-                $di->lazyValue('cookie')
+                $di->lazyValue(Cookie::class)
             )
         );
 
         $di->set(
-            'aura/session:csrf',
+            Session\CsrfToken::class,
             $di->lazyGetCall(
-                'aura/session:session',
+                Session\Session::class,
                 'getCsrfToken'
             )
         );
